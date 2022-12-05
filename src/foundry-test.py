@@ -7,8 +7,9 @@ import time
 import subprocess
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
-from settings import FOUNDRY_BIN_DIR, FOUNDRY_DATA_DIR
+from settings import FOUNDRY_BIN_DIR, FOUNDRY_DATA_DIR, TEST_WORLD
 
 
 def close_test(open_driver, open_foundry_proc):
@@ -31,8 +32,26 @@ def start_webdriver():
     """
     driver = webdriver.Chrome()
     driver.get("http://localhost:30000")
-    time.sleep(10)
+    time.sleep(5)
     return driver
+
+
+def open_world(world_name, driver):
+    """
+    Opens a world in the test enviroment
+    :param world_name:
+    :param driver: WebDriver
+    """
+    warning_close_buttons = driver.find_elements(
+        By.CSS_SELECTOR, ".close.fas.fa-times-circle")
+    for close_button in warning_close_buttons:
+        close_button.click()
+        time.sleep(1)
+    launch_button = driver.find_element(
+        By.CSS_SELECTOR,
+        f"[data-world='{world_name}'][data-action='launchWorld']")
+    launch_button.click()
+    time.sleep(10)
 
 
 if __name__ == '__main__':
@@ -43,4 +62,5 @@ if __name__ == '__main__':
     time.sleep(10)
     print("Foundry Running")
     web_driver = start_webdriver()
+    open_world(TEST_WORLD, web_driver)
     close_test(web_driver, foundry_process)
