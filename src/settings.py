@@ -8,3 +8,5 @@ FOUNDRY_DATA_DIR = '/home/javier/Descargas/foundry-10/'
 TEST_WORLD = 'la-casa-de-la-bestia'
 
 GM_PASSWORD = ''
+
+SMALL_TIMEOUT_SECONDS = 3

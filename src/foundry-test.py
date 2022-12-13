@@ -7,9 +7,12 @@ import time
 import subprocess
 
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 
-from settings import FOUNDRY_BIN_DIR, FOUNDRY_DATA_DIR, TEST_WORLD
+from settings import FOUNDRY_BIN_DIR, FOUNDRY_DATA_DIR, TEST_WORLD, \
+    GM_PASSWORD, SMALL_TIMEOUT_SECONDS
+from src.test_api.launching import open_world, launch_world
+
+from test_api.side_bar import select_tab
 
 
 def close_test(open_driver, open_foundry_proc):
@@ -32,26 +35,8 @@ def start_webdriver():
     """
     driver = webdriver.Chrome()
     driver.get("http://localhost:30000")
-    time.sleep(5)
+    time.sleep(SMALL_TIMEOUT_SECONDS)
     return driver
-
-
-def open_world(world_name, driver):
-    """
-    Opens a world in the test enviroment
-    :param world_name:
-    :param driver: WebDriver
-    """
-    warning_close_buttons = driver.find_elements(
-        By.CSS_SELECTOR, ".close.fas.fa-times-circle")
-    for close_button in warning_close_buttons:
-        close_button.click()
-        time.sleep(1)
-    launch_button = driver.find_element(
-        By.CSS_SELECTOR,
-        f"[data-world='{world_name}'][data-action='launchWorld']")
-    launch_button.click()
-    time.sleep(10)
 
 
 if __name__ == '__main__':
@@ -59,8 +44,13 @@ if __name__ == '__main__':
     print("Starting Foundry")
     foundry_process = subprocess.Popen(
         ['node', 'resources/app/main.js', f'--dataPath={FOUNDRY_DATA_DIR}'])
-    time.sleep(10)
+    time.sleep(SMALL_TIMEOUT_SECONDS)
     print("Foundry Running")
     web_driver = start_webdriver()
     open_world(TEST_WORLD, web_driver)
+    time.sleep(SMALL_TIMEOUT_SECONDS)
+    launch_world(GM_PASSWORD, web_driver)
+    time.sleep(SMALL_TIMEOUT_SECONDS)
+    select_tab('actors', web_driver)
+    time.sleep(SMALL_TIMEOUT_SECONDS)
     close_test(web_driver, foundry_process)
