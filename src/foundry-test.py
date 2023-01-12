@@ -53,4 +53,10 @@ if __name__ == '__main__':
     time.sleep(SMALL_TIMEOUT_SECONDS)
     select_tab('actors', web_driver)
     time.sleep(SMALL_TIMEOUT_SECONDS)
+    js_errors = [log['message'] for log in web_driver.get_log('browser')
+                 if log['level'] == 'SEVERE']
     close_test(web_driver, foundry_process)
+    if js_errors:
+        print("JS Errors:")
+        for error in set(js_errors):
+            print(error)
