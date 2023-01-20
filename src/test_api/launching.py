@@ -15,11 +15,11 @@ def open_world(world_name, driver):
         By.CSS_SELECTOR, ".close.fas.fa-times-circle")
     for close_button in warning_close_buttons:
         close_button.click()
-        time.sleep(1)
     launch_button = driver.find_element(
         By.CSS_SELECTOR,
         f"[data-world='{world_name}'][data-action='launchWorld']")
     launch_button.click()
+    driver.find_element(By.NAME, "join")
 
 
 def launch_world(gm_password: str, driver: webdriver.Chrome):
@@ -32,3 +32,4 @@ def launch_world(gm_password: str, driver: webdriver.Chrome):
     driver.find_element(By.CSS_SELECTOR, "[name='password']").send_keys(
         gm_password)
     driver.find_element(By.CSS_SELECTOR, "[name='join']").click()
+    driver.find_element(By.ID, 'chat-log')

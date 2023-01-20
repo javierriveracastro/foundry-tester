@@ -34,6 +34,7 @@ def start_webdriver():
     :return: a webdriver instance
     """
     driver = webdriver.Chrome()
+    driver.implicitly_wait(SMALL_TIMEOUT_SECONDS)
     driver.get("http://localhost:30000")
     time.sleep(SMALL_TIMEOUT_SECONDS)
     return driver
@@ -48,11 +49,8 @@ if __name__ == '__main__':
     print("Foundry Running")
     web_driver = start_webdriver()
     open_world(TEST_WORLD, web_driver)
-    time.sleep(SMALL_TIMEOUT_SECONDS)
     launch_world(GM_PASSWORD, web_driver)
-    time.sleep(SMALL_TIMEOUT_SECONDS)
     select_tab('actors', web_driver)
-    time.sleep(SMALL_TIMEOUT_SECONDS)
     js_errors = [log['message'] for log in web_driver.get_log('browser')
                  if log['level'] == 'SEVERE']
     close_test(web_driver, foundry_process)
