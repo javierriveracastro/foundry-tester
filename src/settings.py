@@ -10,3 +10,5 @@ TEST_WORLD = 'la-casa-de-la-bestia'
 GM_PASSWORD = ''
 
 SMALL_TIMEOUT_SECONDS = 3
+
+HISTORY = 'br2-history'

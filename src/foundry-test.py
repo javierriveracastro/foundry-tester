@@ -5,15 +5,15 @@ Opens and test a foundry install
 import os
 import time
 import subprocess
+import importlib
 
 from selenium import webdriver
 
 from settings import FOUNDRY_BIN_DIR, FOUNDRY_DATA_DIR, TEST_WORLD, \
-    GM_PASSWORD, SMALL_TIMEOUT_SECONDS
+    GM_PASSWORD, SMALL_TIMEOUT_SECONDS, HISTORY
 from src.test_api.launching import open_world, launch_world
 
 from test_api.side_bar import select_tab
-
 
 def close_test(open_driver, open_foundry_proc):
     """
@@ -47,10 +47,12 @@ if __name__ == '__main__':
         ['node', 'resources/app/main.js', f'--dataPath={FOUNDRY_DATA_DIR}'])
     time.sleep(SMALL_TIMEOUT_SECONDS)
     print("Foundry Running")
+    history = importlib.import_module(f'src.histories.{HISTORY}')
     web_driver = start_webdriver()
     open_world(TEST_WORLD, web_driver)
     launch_world(GM_PASSWORD, web_driver)
     select_tab('actors', web_driver)
+    history.run_history(web_driver)
     js_errors = [log['message'] for log in web_driver.get_log('browser')
                  if log['level'] == 'SEVERE']
     close_test(web_driver, foundry_process)
