@@ -2,6 +2,8 @@
 Functions to manage the sidebar.
 """
 
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,3 +21,30 @@ def select_tab(tab_name: str, driver: webdriver.Chrome):
     contenido = driver.find_element(By.ID, tab_name)
     WebDriverWait(driver, SMALL_TIMEOUT_SECONDS).until(
         cond.visibility_of(contenido))
+
+
+def open_actor(name: str, folder: str, driver: webdriver.Chrome):
+    """
+    Opens the actor with the given name
+    """
+    if folder:
+        folder_element = None
+        for icon_element in driver.find_elements(
+                By.CSS_SELECTOR, "#sidebar .folder-header h3"):
+            if icon_element.text == folder:
+                folder_element = icon_element
+                break
+        if folder_element:
+            folder_element.click()
+    actor_element = None
+    for posible_actor in driver.find_elements(
+            By.CSS_SELECTOR, ".directory-item.actor h4"):
+        print(posible_actor.text)
+        print(posible_actor.get_attribute('OuterHTML'))
+        if posible_actor.text == name:
+            actor_element = posible_actor
+            break
+    actor_element.click()
+    time.sleep(5)
+
+
