@@ -1,9 +1,7 @@
 """
 Functions to manage the sidebar.
 """
-
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -39,12 +37,20 @@ def open_actor(name: str, folder: str, driver: webdriver.Chrome):
     actor_element = None
     for posible_actor in driver.find_elements(
             By.CSS_SELECTOR, ".directory-item.actor h4"):
-        print(posible_actor.text)
-        print(posible_actor.get_attribute('OuterHTML'))
         if posible_actor.text == name:
             actor_element = posible_actor
             break
     actor_element.click()
-    time.sleep(5)
 
 
+def clear_chat(driver: webdriver.Chrome):
+    """
+    Clears the chat
+    :param driver: Selenium driver
+    """
+    select_tab('chat', driver)
+    driver.find_element(
+        By.CSS_SELECTOR, "a.delete.chat-flush .fa-trash").click()
+    WebDriverWait(driver, SMALL_TIMEOUT_SECONDS).until(
+        lambda drv: drv.find_element(By.CSS_SELECTOR, ".app.dialog"))
+    driver.find_element(By.CSS_SELECTOR, ".dialog-button.yes").click()
