@@ -2,13 +2,12 @@
 API for the SWADE system
 """
 
-import time
-
 from selenium.webdriver.common.by import By
 
 from .side_bar import select_tab
 
-def roll_attribute(name, driver):
+
+def click_attribute(name, driver):
     """
     Rolls an attribute
     :param name: Name of the attribute
@@ -23,5 +22,4 @@ def roll_attribute(name, driver):
             break
     if attribute_button:
         attribute_button.click()
-    time.sleep(5)
 
