@@ -11,7 +11,7 @@ from selenium import webdriver
 
 from settings import FOUNDRY_BIN_DIR, FOUNDRY_DATA_DIR, TEST_WORLD, \
     GM_PASSWORD, SMALL_TIMEOUT_SECONDS, HISTORY
-from src.test_api.launching import open_world, launch_world
+from test_api.launching import open_world, launch_world
 
 from test_api.side_bar import select_tab
 
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         ['node', 'resources/app/main.js', f'--dataPath={FOUNDRY_DATA_DIR}'])
     time.sleep(SMALL_TIMEOUT_SECONDS)
     print("Foundry Running")
-    history = importlib.import_module(f'src.histories.{HISTORY}')
+    history = importlib.import_module(f'histories.{HISTORY}')
     web_driver = start_webdriver()
     open_world(TEST_WORLD, web_driver)
     launch_world(GM_PASSWORD, web_driver)

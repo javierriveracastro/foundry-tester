@@ -1,13 +1,12 @@
 """
 Functions to manage the sidebar.
 """
-import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as cond
 
-from src.settings import SMALL_TIMEOUT_SECONDS
+from settings import SMALL_TIMEOUT_SECONDS
 
 
 def select_tab(tab_name: str, driver: webdriver.Chrome):
@@ -54,3 +53,17 @@ def clear_chat(driver: webdriver.Chrome):
     WebDriverWait(driver, SMALL_TIMEOUT_SECONDS).until(
         lambda drv: drv.find_element(By.CSS_SELECTOR, ".app.dialog"))
     driver.find_element(By.CSS_SELECTOR, ".dialog-button.yes").click()
+
+
+def get_last_message(driver: webdriver.Chrome):
+    """
+    Gets the last message in the chat
+    :param driver: Selenium driver
+    :return: The message
+    """
+    cards = driver.find_element(By.ID, "chat-log").find_elements(
+        By.TAG_NAME, "li")
+    return cards[-1] if len(cards) > 0 else None
+
+
+
